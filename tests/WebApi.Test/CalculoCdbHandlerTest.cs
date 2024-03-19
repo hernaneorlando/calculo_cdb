@@ -1,6 +1,7 @@
 using FluentAssertions;
 using System.Collections;
 using WebApi.CalculoCdb;
+using WebApi.Infraestrutura;
 
 namespace WebApi.Test;
 
@@ -126,7 +127,7 @@ public class CalculoCdbHandlerTest
             };
             yield return new object[]       // Alíquota do imposto de 15% para um prazo acima de 24 meses.
             {                               // A fim de não estourar o valor máximo do tipo Decimal
-                random.Next(25, 500),       // o total de meses foi limitado em 1200 meses (100 anos).
+                random.Next(25, 360),       // o total de meses foi limitado em 360 meses (30 anos).
                 0.150M
             };
         }

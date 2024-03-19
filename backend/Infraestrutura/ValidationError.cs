@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace WebApi;
+namespace WebApi.Infraestrutura;
 
 public class ValidationError : Exception
 {

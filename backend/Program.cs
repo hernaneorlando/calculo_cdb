@@ -1,6 +1,6 @@
 using FluentValidation;
 using Microsoft.OpenApi.Models;
-using WebApi;
+using WebApi.Infraestrutura;
 
 var builder = WebApplication.CreateBuilder(args);
 

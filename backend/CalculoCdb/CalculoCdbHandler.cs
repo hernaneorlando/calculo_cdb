@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using WebApi.Infraestrutura;
 
 namespace WebApi.CalculoCdb;
 
@@ -26,7 +27,6 @@ public class CalculoCdbHandler(CalculoCdbCommandValidator validator) : IRequestH
 
     private static decimal CalculeValorFinalDoCdb(decimal valorInicial, int quantidadeDeMeses)
     {
-        //decimal valorFinalBruto = (decimal)(((double)valorInicial) * Math.Pow((double)(1 + (CDI * TB)), quantidadeDeMeses));
         var valorFinalBruto = 0M;
         for (var i = 1; i <= quantidadeDeMeses; i++)
         {
@@ -41,13 +41,10 @@ public class CalculoCdbHandler(CalculoCdbCommandValidator validator) : IRequestH
     {
         var aliquotaDoImposto = quantidadeDeMeses switch
         {
-            int meses when meses > 0 && meses <= 6      // Alíquota do imposto de 22,5% para um prazo de até 06 meses.
-                => 0.225M,
-            int meses when meses > 6 && meses <= 12     // Alíquota do imposto de 20% para um prazo de até 12 meses.
-                => 0.20M,
-            int meses when meses > 12 && meses <= 24    // Alíquota do imposto de 17,5% para um prazo de até 24 meses.
-                => 0.175M,
-            _ => 0.15M                                  // Alíquota do imposto de 15% para um prazo acima de 24 meses.
+            > 0 and <= 6 => 0.225M,     // Alíquota do imposto de 22,5% para um prazo de até 06 meses.
+            > 6 and <= 12 => 0.20M,     // Alíquota do imposto de 20% para um prazo de até 12 meses.
+            > 12 and <= 24 => 0.175M,   // Alíquota do imposto de 17,5% para um prazo de até 24 meses.
+            _ => 0.15M                  // Alíquota do imposto de 15% para um prazo acima de 24 meses.
         };
 
         return valorBruto - (valorBruto * aliquotaDoImposto);
