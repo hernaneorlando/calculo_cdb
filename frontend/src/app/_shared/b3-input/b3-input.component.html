@@ -1,0 +1,9 @@
+<label *ngIf="mostrarLabel"
+       class="font-semibold text-xl pt-6 pb-2"
+       for="{{idDoCampo}}">{{label}}</label>
+
+<input class="h-10 w-full pl-2 border-solid border-2 rounded-md border-cor-primaria-var my-2"
+       id="{{idDoCampo}}"
+       name="{{idDoCampo}}"
+       placeholder="{{placeholder}}"
+       (input)="registraValor($event.target)"/>

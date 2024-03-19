@@ -18,8 +18,8 @@ public class CalculoCdbHandler(CalculoCdbCommandValidator validator) : IRequestH
             throw new ValidationError(validationResult.Errors);
         }
 
-        var valorBruto = CalculeValorFinalDoCdb(request.ValorInicial, request.QuantidaDeMeses);
-        var valorLiquido = CalculoValorLiquidoDoCdb(valorBruto, request.QuantidaDeMeses);
+        var valorBruto = CalculeValorFinalDoCdb(request.ValorInicial, request.QuantidadeDeMeses);
+        var valorLiquido = CalculoValorLiquidoDoCdb(valorBruto, request.QuantidadeDeMeses);
 
         var resultadoDoCalculo = new CalculoCdbDto(valorBruto, valorLiquido);
         return Task.FromResult(resultadoDoCalculo);

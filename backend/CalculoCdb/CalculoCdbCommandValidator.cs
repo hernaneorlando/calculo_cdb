@@ -10,7 +10,7 @@ public class CalculoCdbCommandValidator : AbstractValidator<CalculoCdbCommand>
             .GreaterThan(0)
             .WithMessage("O valor inicial deve ser maior que 0");
 
-        RuleFor(calculo => calculo.QuantidaDeMeses)
+        RuleFor(calculo => calculo.QuantidadeDeMeses)
             .GreaterThan(1)
             .WithMessage("O prazo em meses deve ser maior que 1");
     }

@@ -21,7 +21,7 @@ public class CalculoCdbHandlerTest
         var requisicao = new CalculoCdbCommand
         {
             ValorInicial = ObtenhaValorMonetarioInicialPositivo() * -1,
-            QuantidaDeMeses = 12
+            QuantidadeDeMeses = 12
         };
 
         var validador = new CalculoCdbCommandValidator();
@@ -50,7 +50,7 @@ public class CalculoCdbHandlerTest
         var requisicao = new CalculoCdbCommand
         {
             ValorInicial = ObtenhaValorMonetarioInicialPositivo(),
-            QuantidaDeMeses = random.Next(0, 1)
+            QuantidadeDeMeses = random.Next(0, 1)
         };
 
         var validador = new CalculoCdbCommandValidator();
@@ -62,7 +62,7 @@ public class CalculoCdbHandlerTest
         // Validação
         await acao.Should()
            .ThrowExactlyAsync<ValidationError>()
-           .WithMessage($"'{nameof(CalculoCdbCommand.QuantidaDeMeses)}': O prazo em meses deve ser maior que 1;");
+           .WithMessage($"'{nameof(CalculoCdbCommand.QuantidadeDeMeses)}': O prazo em meses deve ser maior que 1;");
     }
 
     /// <summary>
@@ -80,7 +80,7 @@ public class CalculoCdbHandlerTest
         var requisicao = new CalculoCdbCommand
         {
             ValorInicial = ObtenhaValorMonetarioInicialPositivo(),
-            QuantidaDeMeses = meses
+            QuantidadeDeMeses = meses
         };
 
         var validador = new CalculoCdbCommandValidator();
