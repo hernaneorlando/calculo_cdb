@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  mssql-database:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mssql-database
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=User@123
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    healthcheck:
+      test: ["CMD-SHELL", "/bin/sh -c SA_PASSWORD=$(echo $SA_PASSWORD) /opt/mssql-tools/bin/sqlcmd -Usa -P'$SA_PASSWORD' -Q 'select 1'"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - poc-network
+
+  dotnet-backend:
+    build:
+      dockerfile: backend.Dockerfile
+      context: .
+    image: dotnet-backend
+    container_name: dotnet-backend
+    depends_on:
+      mssql-database:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://dotnet-backend:8080/healthz"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - poc-network
+
+  ng-frontend:
+    build:
+      dockerfile: frontend.Dockerfile
+      context: .
+    image: ng-frontend
+    container_name: ng-frontend
+    depends_on:
+      dotnet-backend:
+        condition: service_healthy
+    ports:
+      - "8081:4200"
+    networks:
+      - poc-network
+
+networks:
+  poc-network:
+    driver: bridge
