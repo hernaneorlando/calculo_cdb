@@ -3,6 +3,7 @@ WORKDIR /src
 
 COPY ./backend ./
 RUN dotnet publish "WebApi.csproj" -c release -o /app
+RUN cp ./InitialDataSeed.sql /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app

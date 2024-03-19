@@ -16,10 +16,12 @@ public class CdbConfiguration : IEntityTypeConfiguration<Cdb>
 
         builder.Property(e => e.Cdi)
             .HasColumnName("cdi")
+            .HasPrecision(18, 6)
             .IsRequired();
 
         builder.Property(e => e.TaxaBancaria)
             .HasColumnName("tb")
+            .HasPrecision(18, 6)
             .IsRequired();
 
         builder.Property(e => e.CreatedAt).HasColumnName("createdAt");

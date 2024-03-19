@@ -4,7 +4,7 @@ using WebApi.CalculoCdb;
 
 namespace WebApi.Infraestrutura;
 
-public class SqlDataContext(DbContextOptions<SqlDataContext> options) : DbContext(options)
+public class SqlDataContext(DbContextOptions<SqlDataContext> options) : DbContext(options), ISqlDataContext
 {
     public DbSet<Cdb> Cdb { get; set; }
 

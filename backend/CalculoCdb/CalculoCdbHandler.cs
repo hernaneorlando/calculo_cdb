@@ -1,14 +1,15 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Infraestrutura;
 
 namespace WebApi.CalculoCdb;
 
-public class CalculoCdbHandler(CalculoCdbCommandValidator validator) : IRequestHandler<CalculoCdbCommand, CalculoCdbDto>
+public class CalculoCdbHandler(
+    CalculoCdbCommandValidator validator,
+    ISqlDataContext dataContext) : IRequestHandler<CalculoCdbCommand, CalculoCdbDto>
 {
     private readonly CalculoCdbCommandValidator _validator = validator;
-
-    private const decimal CDI = 0.09M;      // Valor fixo do CDI em 0,9%
-    private const decimal TB = 1.08M;       // Valor fixo da Taxa Bancária em 108%
+    private readonly ISqlDataContext _dataContext = dataContext;
 
     public Task<CalculoCdbDto> Handle(CalculoCdbCommand request, CancellationToken cancellationToken)
     {
@@ -25,12 +26,17 @@ public class CalculoCdbHandler(CalculoCdbCommandValidator validator) : IRequestH
         return Task.FromResult(resultadoDoCalculo);
     }
 
-    private static decimal CalculeValorFinalDoCdb(decimal valorInicial, int quantidadeDeMeses)
+    private decimal CalculeValorFinalDoCdb(decimal valorInicial, int quantidadeDeMeses)
     {
+        var cdb = _dataContext.Cdb
+            .AsNoTracking()
+            .OrderBy(e => e.UpdatedAt)
+            .Last();
+
         var valorFinalBruto = 0M;
         for (var i = 1; i <= quantidadeDeMeses; i++)
         {
-            valorFinalBruto = valorInicial * (1 + (CDI * TB));
+            valorFinalBruto = valorInicial * (1 + (cdb.Cdi * cdb.TaxaBancaria));
             valorInicial = valorFinalBruto;
         }
 
