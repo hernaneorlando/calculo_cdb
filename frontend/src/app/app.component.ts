@@ -13,13 +13,48 @@ export class AppComponent {
   valorInicial: number = 0.0;
   quantidadeDeMeses: number = 0;
 
+  valorFormatado: string = '';
+  mesesFormatado: string = '';
+
   calculoResposta!: CalculoCdbDto;
+  formatador: Intl.NumberFormat;
 
-  constructor(private servico: CalculoCdbService) { }
+  constructor(private servico: CalculoCdbService) {
+    this.formatador = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      
+    })
+  }
 
+  formataValorInicial(input: InputEvent) {
+    if (input.data) {
+      this.valorFormatado += input.data?.replace(/\D/g, '');
+      const formattedAmount = this.formatador.format(Number(this.valorFormatado) / 100);
+      (input.target as HTMLInputElement).value = formattedAmount;
+      return;
+    }
+
+    this.valorFormatado = '';
+    (input.target as HTMLInputElement).value = this.valorFormatado;
+  }
+
+  formataQuantidadeDeMeses(input: InputEvent) {
+    if (input.data) {
+      this.mesesFormatado += input.data?.replace(/\D/g, '');
+    } else {
+      this.mesesFormatado = '';
+    }
+
+    (input.target as HTMLInputElement).value = this.mesesFormatado;
+  }
 
   registraValorInicial(valor: string) {
-    this.valorInicial = parseFloat(valor);
+    const valorNumerico = valor
+      .replace('R$', '')
+      .replace('.', '')
+      .replace(',', '.');
+    this.valorInicial = parseFloat(valorNumerico);
   }
 
   registraQuantidadeDeMeses(valor: string) {
@@ -34,8 +69,5 @@ export class AppComponent {
 
     this.servico.calculaCdb(calculoCdb)
       .subscribe(resposta => this.calculoResposta = resposta);
-
-    console.log('Valor Inicial: ', this.valorInicial);
-    console.log('Quantidade de Meses: ', this.quantidadeDeMeses);
   }
 }

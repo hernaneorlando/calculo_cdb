@@ -6,4 +6,5 @@
        id="{{idDoCampo}}"
        name="{{idDoCampo}}"
        placeholder="{{placeholder}}"
-       (input)="registraValor($event.target)"/>
+       (input)="transformaValor($event)"
+       (blur)="registraValor($event.target)">

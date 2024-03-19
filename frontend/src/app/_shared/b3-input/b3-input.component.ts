@@ -11,7 +11,12 @@ export class B3InputComponent {
   @Input() label!: string;
   @Input() mostrarLabel!: boolean;
 
+  @Output() valorFormatado = new EventEmitter();
   @Output() valor = new EventEmitter<string>();
+
+  transformaValor(event: Event) {
+    this.valorFormatado.emit(event);
+  }
 
   registraValor(event: EventTarget | null) {
     const input = event as HTMLInputElement;
