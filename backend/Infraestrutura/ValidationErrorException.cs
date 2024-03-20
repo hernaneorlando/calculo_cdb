@@ -2,11 +2,11 @@
 
 namespace WebApi.Infraestrutura;
 
-public class ValidationError : Exception
+public class ValidationErrorException : Exception
 {
     private readonly string _message;
 
-    public ValidationError(IList<ValidationFailure> validationFailures)
+    public ValidationErrorException(IList<ValidationFailure> validationFailures)
     {
         var listaDeMensagensDeErro = validationFailures
             .Select(error => $"'{error.PropertyName}': {error.ErrorMessage};")

@@ -9,7 +9,7 @@ internal sealed class ErrorHandler() : IExceptionHandler
     {
         var problemDetails = exception switch
         {
-            ValidationError validation => new ProblemDetails
+            ValidationErrorException validation => new ProblemDetails
             {
                 Status = StatusCodes.Status400BadRequest,
                 Title = "Bad Request",

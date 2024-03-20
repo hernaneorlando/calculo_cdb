@@ -16,7 +16,7 @@ public class CalculoCdbHandler(
         var validationResult = _validator.Validate(request);
         if (!validationResult.IsValid)
         {
-            throw new ValidationError(validationResult.Errors);
+            throw new ValidationErrorException(validationResult.Errors);
         }
 
         var valorBruto = CalculeValorFinalDoCdb(request.ValorInicial, request.QuantidadeDeMeses);
