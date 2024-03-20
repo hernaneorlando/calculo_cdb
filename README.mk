@@ -1,2 +1,0 @@
-# Cálculo CDB
-DESAFIO DO CÁLCULO DO CDB
