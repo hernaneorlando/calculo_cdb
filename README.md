@@ -59,4 +59,4 @@ A utilização da biblioteca MediatR em uma solução .NET pode ser vantajosa, i
 
 Falta de testes de integração:
 
-O projeto ainda não possui testes de integração automatizados para verificar a interação entre as diferentes camadas da aplicação. É recomendável a implementação de testes de integração utilizando ferramentas BDD (Behavior Driven Development), como Cucumber e/ou SpecFlow. Assim como também o sistema ainda não possui uma devida aplicação de padrões de _logging_, autenticação e autorização (a serem implementados no futuro).
+O projeto ainda não possui testes de integração automatizados para verificar a interação entre as diferentes camadas da aplicação. É recomendável a implementação de testes de integração utilizando ferramentas BDD (Behavior Driven Development), como [Cucumber](https://cucumber.io/) e/ou [SpecFlow](https://specflow.org/). Assim como também o sistema ainda não possui uma devida aplicação de padrões de _logging_, autenticação e autorização (a serem implementados no futuro).
