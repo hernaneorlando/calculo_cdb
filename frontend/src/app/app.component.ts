@@ -15,6 +15,7 @@ export class AppComponent {
 
   valorFormatado: string = '';
   mesesFormatado: string = '';
+  erroMesesFormatado: boolean = false;
 
   calculoResposta!: CalculoCdbDto;
   formatador: Intl.NumberFormat;
@@ -59,15 +60,20 @@ export class AppComponent {
 
   registraQuantidadeDeMeses(valor: string) {
     this.quantidadeDeMeses = parseInt(valor);
+    this.erroMesesFormatado = this.quantidadeDeMeses <= 1;
   }
 
   calcular() {
+    if (this.erroMesesFormatado) {
+      return;
+    }
+
     const calculoCdb: CalculoCdb = {
       valorInicial: this.valorInicial,
       quantidadeDeMeses: this.quantidadeDeMeses
     };
 
     this.servico.calculaCdb(calculoCdb)
-      .subscribe(resposta => this.calculoResposta = resposta);
+      .subscribe((resposta: CalculoCdbDto) => this.calculoResposta = resposta);
   }
 }

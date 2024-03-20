@@ -25,6 +25,9 @@
                 [mostrarLabel]="true"
                 (valorFormatado)="formataQuantidadeDeMeses($event)"
                 (valor)="registraQuantidadeDeMeses($event)" />
+      <div *ngIf="erroMesesFormatado" class="text-red-400">
+        A quantidade de meses deve ser superior a 1.
+      </div>
 
       <b3-button class="self-end my-6"
                  texto="CALCULAR"
