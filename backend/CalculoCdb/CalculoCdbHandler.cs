@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using WebApi.Infraestrutura;
 
 namespace WebApi.CalculoCdb;
