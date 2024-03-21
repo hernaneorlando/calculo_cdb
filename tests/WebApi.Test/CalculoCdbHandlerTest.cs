@@ -49,11 +49,10 @@ public class CalculoCdbHandlerTest
     public async Task RetornaExcecaoDevidoAPrazoMensalMenorQueDois()
     {
         // Cenário
-        var random = new Random();
         var requisicao = new CalculoCdbCommand
         {
             ValorInicial = 100M,
-            QuantidadeDeMeses = random.Next(0, 1)
+            QuantidadeDeMeses = 1
         };
 
         var validador = new CalculoCdbCommandValidator();

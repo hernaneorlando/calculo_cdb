@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using WebApi.Infraestrutura;
 
 namespace WebApi.CalculoCdb;
@@ -20,7 +21,7 @@ public class CalculoCdbHandler(
         }
 
         var valorBruto = CalculeValorFinalDoCdb(request.ValorInicial, request.QuantidadeDeMeses);
-        var valorLiquido = CalculoValorLiquidoDoCdb(valorBruto, request.QuantidadeDeMeses);
+        var valorLiquido = CalculoValorLiquidoDoCdb(valorBruto, request.ValorInicial, request.QuantidadeDeMeses);
 
         var resultadoDoCalculo = new CalculoCdbDto(valorBruto, valorLiquido);
         return Task.FromResult(resultadoDoCalculo);
@@ -33,17 +34,17 @@ public class CalculoCdbHandler(
             .OrderBy(e => e.UpdatedAt)
             .Last();
 
-        var valorFinalBruto = 0M;
-        for (var i = 1; i <= quantidadeDeMeses; i++)
+        decimal calculaCdb(decimal vi) => vi * (1 + (cdb.Cdi * cdb.TaxaBancaria));
+        decimal valorFinal = calculaCdb(valorInicial);
+        for (var i = 1; i < quantidadeDeMeses; i++)
         {
-            valorFinalBruto = valorInicial * (1 + (cdb.Cdi * cdb.TaxaBancaria));
-            valorInicial = valorFinalBruto;
+            valorFinal = calculaCdb(valorFinal);
         }
 
-        return valorFinalBruto;
+        return valorFinal;
     }
 
-    private static decimal CalculoValorLiquidoDoCdb(decimal valorBruto, int quantidadeDeMeses)
+    private static decimal CalculoValorLiquidoDoCdb(decimal valorBruto, decimal valorInicial, int quantidadeDeMeses)
     {
         var aliquotaDoImposto = quantidadeDeMeses switch
         {
@@ -53,6 +54,7 @@ public class CalculoCdbHandler(
             _ => 0.15M                  // Alíquota do imposto de 15% para um prazo acima de 24 meses.
         };
 
-        return valorBruto - (valorBruto * aliquotaDoImposto);
+        var imposto = aliquotaDoImposto * (valorBruto - valorInicial);
+        return valorBruto - imposto;
     }
 }
